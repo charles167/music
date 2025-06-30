@@ -21,7 +21,7 @@ const About = () => {
                 className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl"
               >
                 <img
-                  src="https://storage.googleapis.com/hostinger-horizons-assets-prod/61051daa-b510-4c22-bc08-657056ca4881/a047f359eb0bb8b350deec1d47620005.png"
+                  src="/WhatsApp Image 2025-06-30 at 14.48.19_65b878a9.jpg"
                   alt="Portrait of Mayoher singing"
                   className="w-full h-full object-cover"
                 />

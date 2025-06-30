@@ -2,7 +2,6 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import YouTube from 'react-youtube';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,19 +29,6 @@ const Home = () => {
     { name: "Spirit Move", url: "https://open.spotify.com/track/2xpTqrmH8kE2KjlndSE5Oq" },
   ];
 
-  const videoOptions = {
-    playerVars: {
-      autoplay: 1,
-      controls: 0,
-      mute: 1,
-      loop: 1,
-      playlist: '9G9NjU5ByAI', // Required for looping
-      modestbranding: 1,
-      showinfo: 0,
-      rel: 0,
-    }
-  };
-
   return (
     <>
       <Helmet>
@@ -51,31 +37,19 @@ const Home = () => {
       </Helmet>
 
       <div className="bg-background text-foreground">
-        {/* Hero Section with Fullscreen YouTube Background */}
-        <section className="relative h-screen w-full flex items-center justify-center text-center text-white overflow-hidden">
-          {/* YouTube Video */}
-          <div className="absolute inset-0 -z-10">
-            <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-              <YouTube
-                videoId="9G9NjU5ByAI"
-                opts={videoOptions}
-                className="w-full h-full absolute top-0 left-0"
-              />
-            </div>
-            <div className="absolute inset-0 bg-black/60" />
-          </div>
 
-          {/* Hero Content */}
+        {/* Hero Section */}
+        <section className="relative h-screen w-full flex items-center justify-center text-center text-white overflow-hidden bg-black">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
             className="relative z-10 p-4"
           >
-            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold mb-4 text-shadow">
+            <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold mb-4">
               Inspiration for the Journey.<br />Creativity for the Soul.
             </h1>
-            <p className="text-lg md:text-xl max-w-3xl mx-auto mb-8 text-shadow opacity-90">
+            <p className="text-lg md:text-xl max-w-3xl mx-auto mb-8 opacity-90">
               Music, books, devotionals, videos, and live events designed to stir your spirit and empower your walk.
             </p>
             <Button
@@ -87,6 +61,23 @@ const Home = () => {
             </Button>
           </motion.div>
         </section>
+
+        {/* Embedded Video Section */}
+       <section className="w-full bg-black">
+  <div className="relative pt-[56.25%] w-full">
+    <iframe
+      className="absolute top-0 left-0 w-full h-full"
+      src="https://www.youtube.com/embed/WneegcRK89w?autoplay=0&mute=0&rel=0"
+      title="MAYO - MELODY (feat. Testimony JAGA)"
+      frameBorder="0"
+      allow="autoplay; fullscreen; encrypted-media"
+      allowFullScreen
+    ></iframe>
+  </div>
+</section>
+
+
+        {/* Main Content */}
         <div id="main-content">
           {/* About Section */}
           <section className="py-20 lg:py-32">
@@ -99,10 +90,8 @@ const Home = () => {
               >
                 <h2 className="text-4xl md:text-5xl font-bold mb-6 text-heading-royal">Welcome to My Creative Sanctuary.</h2>
                 <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed mb-8">
-                  Here, faith and creativity meet.
-                  <br />
-                  Every project I share flows from real moments, real encounters, and real testimonies.
-                  <br />
+                  Here, faith and creativity meet.<br />
+                  Every project I share flows from real moments, real encounters, and real testimonies.<br />
                   Thanks for being here — let’s journey together.
                 </p>
                 <Link to="/about">
@@ -119,11 +108,12 @@ const Home = () => {
             <div className="max-w-6xl mx-auto px-4">
               <Tabs defaultValue="music" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 bg-transparent p-0 mb-12 gap-4">
-                  <TabsTrigger value="music" className="text-lg py-3 rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg">Music</TabsTrigger>
-                  <TabsTrigger value="books" className="text-lg py-3 rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg">Books</TabsTrigger>
-                  <TabsTrigger value="events" className="text-lg py-3 rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg">Events</TabsTrigger>
-                  <TabsTrigger value="videos" className="text-lg py-3 rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg">Videos</TabsTrigger>
+                  <TabsTrigger value="music">Music</TabsTrigger>
+                  <TabsTrigger value="books">Books</TabsTrigger>
+                  <TabsTrigger value="events">Events</TabsTrigger>
+                  <TabsTrigger value="videos">Videos</TabsTrigger>
                 </TabsList>
+
                 <TabsContent value="music">
                   <div className="text-center p-8 rounded-lg">
                     <Music className="mx-auto h-12 w-12 text-primary mb-4" />
@@ -132,49 +122,97 @@ const Home = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto mb-6">
                       {musicLinks.map(link => (
                         <Button key={link.name} variant="secondary" onClick={() => handleLink(link.url)} className="w-full justify-start text-left">
-                          <Play className="h-4 w-4 mr-2 flex-shrink-0" />
+                          <Play className="h-4 w-4 mr-2" />
                           <span className="truncate">{link.name}</span>
-                          <ExternalLink className="h-4 w-4 ml-auto text-muted-foreground flex-shrink-0" />
+                          <ExternalLink className="h-4 w-4 ml-auto text-muted-foreground" />
                         </Button>
                       ))}
                     </div>
                     <Link to="/shop"><Button variant="link" className="text-primary">Browse Music →</Button></Link>
                   </div>
                 </TabsContent>
+
                 <TabsContent value="books">
                   <div className="text-center p-8 rounded-lg">
                     <BookOpen className="mx-auto h-12 w-12 text-primary mb-4" />
                     <h3 className="text-3xl font-bold mb-2 text-heading-indigo">Words That Water the Soul.</h3>
-                    <p className="max-w-2xl mx-auto text-muted-foreground mb-6">Explore books and devotionals crafted to deepen your faith, renew your mind, and ignite your calling. Short reads, deep truths — timeless encouragement for every season.</p>
+                    <p className="max-w-2xl mx-auto text-muted-foreground mb-6">Explore books and devotionals crafted to deepen your faith, renew your mind, and ignite your calling.</p>
                     <Link to="/shop"><Button>Browse Books & Devotionals</Button></Link>
                   </div>
                 </TabsContent>
+
                 <TabsContent value="events">
                   <div className="text-center p-8 rounded-lg">
                     <Calendar className="mx-auto h-12 w-12 text-primary mb-4" />
                     <h3 className="text-3xl font-bold mb-2 text-heading-indigo">Experience It Live.</h3>
-                    <p className="max-w-2xl mx-auto text-muted-foreground mb-6">Workshops, worship nights, speaking engagements — created to refresh your spirit, awaken your dreams, and connect you with community.</p>
+                    <p className="max-w-2xl mx-auto text-muted-foreground mb-6">Join workshops, worship nights, and community events.</p>
                     <Link to="/events"><Button>See Upcoming Events</Button></Link>
                   </div>
                 </TabsContent>
+
                 <TabsContent value="videos">
-                  <div className="text-center p-8 rounded-lg">
-                    <Video className="mx-auto h-12 w-12 text-primary mb-4" />
-                    <h3 className="text-3xl font-bold mb-2 text-heading-indigo">Encouragement On Demand.</h3>
-                    <p className="max-w-2xl mx-auto text-muted-foreground mb-6">Uplifting videos, honest reflections, and soul-nourishing posts.</p>
-                    <Link to="/blog">
-                      <Button>
-                        <Play className="mr-2 h-4 w-4" />
-                        Watch Videos
-                      </Button>
-                    </Link>
-                  </div>
-                </TabsContent>
+  <div className="py-12">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {[
+        { id: 'K1Xg8b1I2OU', title: 'How To Walk In The Spirit' },
+        { id: 'WneegcRK89w', title: 'The Purpose of Prayer' },
+        { id: 'F3M8phaFKzc', title: 'Faith in the Wilderness' },
+        { id: 'K1Xg8b1I2OU', title: 'How To Walk In The Spirit' },
+        { id: '9G9NjU5ByAI', title: 'Overcoming Fear with Faith' },
+      ].map((video, index) => (
+        <motion.div
+          key={`${video.id}-${index}`}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: index * 0.1 }}
+          viewport={{ once: true }}
+          className="bg-background rounded-2xl overflow-hidden flex flex-col card-hover"
+        >
+          <a
+            href={`https://www.youtube.com/watch?v=${video.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="aspect-video block relative group"
+          >
+            <img
+              className="w-full h-full object-cover"
+              src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
+              alt={`Thumbnail for ${video.title}`}
+            />
+            <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <Play className="h-16 w-16 text-white/80" />
+            </div>
+          </a>
+          <div className="p-4 text-center">
+            <h3 className="font-display text-lg font-bold text-heading-indigo">{video.title}</h3>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+
+    <div className="text-center mt-16">
+      <Button
+        asChild
+        size="lg"
+        className="rounded-full px-8 py-6 text-base"
+      >
+        <a
+          href="https://www.youtube.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          See More on YouTube
+        </a>
+      </Button>
+    </div>
+  </div>
+</TabsContent>
+
               </Tabs>
             </div>
           </section>
 
-          {/* Connect & Newsletter Section */}
+          {/* Connect Section */}
           <section className="py-20 lg:py-32">
             <div className="max-w-4xl mx-auto px-4 text-center">
               <motion.div
@@ -185,7 +223,7 @@ const Home = () => {
                 className="mb-16"
               >
                 <h2 className="text-4xl font-bold mb-4 text-heading-royal">Let’s Connect.</h2>
-                <p className="text-muted-foreground text-lg mb-6">Have a question, a testimony to share, or an invitation to collaborate? I would love to hear from you.</p>
+                <p className="text-muted-foreground text-lg mb-6">Have a testimony to share, or an invitation to collaborate? I’d love to hear from you.</p>
                 <Link to="/contact">
                   <Button size="lg" variant="outline" className="rounded-full border-2">Contact Me</Button>
                 </Link>
@@ -198,9 +236,9 @@ const Home = () => {
                 viewport={{ once: true }}
               >
                 <h2 className="text-4xl font-bold mb-4 text-heading-royal">Stay Connected. Stay Inspired.</h2>
-                <p className="text-muted-foreground text-lg mb-6">Get new releases, exclusive videos, and upcoming events straight to your inbox.</p>
+                <p className="text-muted-foreground text-lg mb-6">Get new releases, exclusive videos, and event updates straight to your inbox.</p>
                 <form
-                  onSubmit={(e) => { e.preventDefault(); toast({ title: "Thanks for joining!" }) }}
+                  onSubmit={(e) => { e.preventDefault(); toast({ title: "Thanks for joining!" }); }}
                   className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto"
                 >
                   <input
